@@ -1,38 +1,23 @@
-window.addEventListener('DOMContentLoaded', () => {
-  function init() {
-  //   const request = new XMLHttpRequest();
-  //   request.open('GET', 'https://kitsu.io/api/edge/anime');
-  //   request.setRequestHeader('Content-type', 'aplication/json; charset=utf-8')
-  //   request.send();
+mainUrl = 'https://kitsu.io/api/edge';
 
-  //   request.addEventListener('readystatechange', function() {
-  //     if (request.readyState === 4 && request.status === 200) {
-  //       let data = JSON.parse(request.response);
-        
+function searchAnime(e) {
+  e.preventDefault();
 
-  //     } else {
-  //       console.error('чот сломалось')
-  //     }
-  //   })
+  const form = new FormData(this);
+  const query = form.get('search-anime');
 
-    getResource('https://kitsu.io/api/edge/anime')
-      .then(data => createCards(data))
-      .catch(err =>  console.error(err))
-  }
+  if(query.length !== 0) {
+    fetch(`${mainUrl}/anime?filter[text]=${query}`) 
+    .then(res => res.json())
+    .then(updDom)
+    .catch(err => console.warm(err.message))
+  } 
+}
 
-  async function getResource(url) {
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      throw new Error(`error XD: ${url}, status ${res.status}`);
-    }
-
-    return await res.json();
-  }
-
-  function createCards(response) {
-    response.data.forEach(item => {
-      const card = document.createElement('div');
+function updDom(res) {
+  res.data.sort((a, b) => a.attributes.userCount-b.attributes.userCount).forEach(item => {
+    console.log(item)
+    const card = document.createElement('div');
 
       card.classList.add('card');
 
@@ -44,8 +29,12 @@ window.addEventListener('DOMContentLoaded', () => {
       `;
 
       document.querySelector('.app').appendChild(card)
-    })
-  }
+  });
+}
 
-  init();
-})
+function pageLoaded() {
+  const form = document.getElementById('search-form');
+  form.addEventListener('submit', searchAnime)
+}
+
+  window.addEventListener('load', pageLoaded);
