@@ -6,11 +6,32 @@
     padding: 0;
 }
 
-.app {
+#search-form {
+    margin: 25px 0 25px 0;
+    width: 100%;
+}
+
+.search {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+}
+
+#search-anime {
+    width: 300px;
+    height: 32px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #000;
+    padding: 10px;
+    font-size: 22px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+#result {
+    display: flex;
     flex-wrap: wrap;
-    padding: 50px;
+    flex: 1;
+    justify-content: space-around;
 }
 
 .card {

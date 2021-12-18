@@ -15,21 +15,21 @@ function searchAnime(e) {
 }
 
 function updDom(res) {
-  res.data.sort((a, b) => a.attributes.userCount-b.attributes.userCount).forEach(item => {
-    console.log(item)
-    const card = document.createElement('div');
-
-      card.classList.add('card');
-
-      card.innerHTML = `
-        <img src='${item.attributes.posterImage.original}'>
-        <div class="name">${item.attributes.titles.en_jp}</div>
-        <div class="episodes">Episodes: ${item.attributes.episodeCount}</div>
-        <div class="description">${item.attributes.description}</div>
+  const searchResult = document.getElementById('result');
+  
+  searchResult.innerHTML = res.data
+    .sort((a, b) => a.attributes.id-b.attributes.id)
+    .map(item => {
+      
+      return `
+        <div class='card'>
+          <img src='${item.attributes.posterImage.original}'>
+          <div class='name'>${item.attributes.titles.en_jp}</div>
+          <div class='episodes'>Episodes: ${item.attributes.episodeCount}</div>
+          <div class='description'>${item.attributes.description}</div>
+        </div>
       `;
-
-      document.querySelector('.app').appendChild(card)
-  });
+  }).join('');
 }
 
 function pageLoaded() {
