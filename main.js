@@ -16,20 +16,42 @@ function searchAnime(e) {
 
 function updDom(res) {
   const searchResult = document.getElementById('result');
-  
-  searchResult.innerHTML = res.data
-    .sort((a, b) => a.attributes.id-b.attributes.id)
-    .map(item => {
+
+  const animeByCategories = res.data
+  .reduce((acc, anime)=>{
+      const {showType} = anime.attributes;
       
-      return `
-        <div class='card'>
-          <img src='${item.attributes.posterImage.original}'>
-          <div class='name'>${item.attributes.titles.en_jp}</div>
-          <div class='episodes'>Episodes: ${item.attributes.episodeCount}</div>
-          <div class='description'>${item.attributes.description}</div>
-        </div>
-      `;
-  }).join('');
+      if(acc[showType] === undefined) 
+      acc[showType] = [];
+      acc[showType].push(anime);
+
+      return acc;
+
+  }, {});
+
+  
+  searchResult.innerHTML = Object.keys(animeByCategories).map(key=>{
+      const animesHTML = animeByCategories[key]
+      .sort((a, b) => a.attributes.id-b.attributes.id)
+      .map(item => {
+      
+        return `
+          <div class='card'>
+            <img src='${item.attributes.posterImage.original}'>
+            <div class='name'>${item.attributes.titles.en_jp}</div>
+            <div class='episodes'>Episodes: ${item.attributes.episodeCount}</div>
+            <div class='description'>${item.attributes.description}</div>
+          </div>
+        `;
+    }).join('');
+
+    return `
+        <section>
+            <h3>${key.toUpperCase()}</h3>
+            <div class="kemicofa-row">${animesHTML}</div>
+        </section>
+    `
+    }).join("");
 }
 
 function pageLoaded() {
