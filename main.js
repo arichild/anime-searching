@@ -34,13 +34,13 @@ function updDom(res) {
       const animesHTML = animeByCategories[key]
       .sort((a, b) => a.attributes.id-b.attributes.id)
       .map(item => {
-      
+      console.log(item)
         return `
           <div class='card'>
             <img src='${item.attributes.posterImage.original}'>
             <div class='name'>${item.attributes.titles.en_jp}</div>
             <div class='episodes'>Episodes: ${item.attributes.episodeCount}</div>
-            <div class='description'>${item.attributes.description}</div>
+            <div class='description'>${item.attributes.synopsis}</div>
           </div>
         `;
     }).join('');
