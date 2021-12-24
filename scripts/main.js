@@ -20,12 +20,12 @@ function updDom(res) {
   const searchResult = document.getElementById('result');
 
   const animeByCategories = res.data
-    .reduce((acc, anime) => {
-        const {showType} = anime.attributes;
+    .reduce((acc, data) => {
+        const {showType} = data.attributes;
         
         if (acc[showType] === undefined) 
         acc[showType] = [];
-        acc[showType].push(anime);
+        acc[showType].push(data);
 
         return acc;
 
@@ -35,14 +35,27 @@ function updDom(res) {
       const animesHTML = animeByCategories[key]
         .sort((a, b) => a.attributes.id-b.attributes.id)
         .map(item => {
-          console.log(item)
+
+          if(item.attributes.episodeCount === null) {
+            item.attributes.episodeCount = 0;
+          }
 
           return `
-            <div class='card'>
+          <div class='card'>
+            <div class="test">  
+              <div class="img-box">
               <img src='${item.attributes.posterImage.original}'>
+              <div class="rating">${Math.floor(item.attributes.averageRating * 10) / 100}</div>
+              </div>
               <div class='name'>${item.attributes.titles.en_jp}</div>
               <div class='episodes'>Episodes: ${item.attributes.episodeCount}</div>
               <div class='description'>${item.attributes.synopsis}</div>
+              <div class="testq">
+                <a href="https://www.youtube.com/watch?v=${item.attributes.youtubeVideoId}">
+                  Watch trailer
+                </a>
+              </div>
+              </div>
             </div>
           `;
       }).join('');
