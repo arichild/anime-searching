@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600&family=Quicksand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600&family=Mulish:wght@200;300;400&display=swap');
 
 * {
     margin: 0;
@@ -20,7 +20,8 @@
     width: 300px;
     height: 32px;
     padding: 10px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Mulish', sans-serif;
+
     font-size: 22px;
     border: none;
     border-bottom: 1px solid #000;
@@ -28,11 +29,13 @@
 }
 
 .card {
+    position: relative;
     width: 300px;
     margin: 20px;
     margin-top: 25px;
     padding: 25px;
     box-shadow: 5px 5px 30px rgba(0,0,0, .1);
+    border-radius: 20px;
 }
 
 img {
@@ -47,12 +50,13 @@ img {
     font-size: 28px;
     font-weight: 500;
     text-align: center;
+    word-break: break-word;
 }
 
 .description {
     height: 160px;
     margin-top: 10px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     font-weight: 300;
     line-height: 120%;
@@ -62,7 +66,7 @@ img {
 
 .episodes {
     margin-top: 10px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Mulish', sans-serif;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
@@ -70,7 +74,7 @@ img {
 
 h3 {
     margin: 20px 0 0 50px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Mulish', sans-serif;
 }
 
 .row {
@@ -94,26 +98,27 @@ section {
     position: absolute;
     top: 0;
     padding: 15px 10px;
-    font-family: 'Quicksand', sans-serif;
+    font-family: 'Mulish', sans-serif;
     font-size: 18px;
     background-color: rgb(59, 56, 59, 0.8);
     color: #fff;
     border-bottom-right-radius: 15px; 
 }
 
-.test {
-    display: flex;
-    flex-direction: column;
+.trailer-btn {
+    height: 50px;
 }
 
 a {
-    font-family: 'Quicksand', sans-serif;
-    color: #000;
-    text-decoration: none;
-    margin-top: 30px;
-    border: 2px solid black;
-    background: white;
+    position: absolute;
+    bottom: 0;
     padding: 5px 75px;
-    width: 100%;
+    margin-bottom: 20px;
+    font-family: 'Mulish', sans-serif;
+    color: #000;
+    border: 2px solid black;
+    border-radius: 20px;
+    background: white;
+    text-decoration: none;
     cursor: pointer;
 }
