@@ -18,9 +18,10 @@ function updDom(res) {
   const searchResult = document.getElementById('result');
   
   searchResult.innerHTML = res.data
-    .sort((a, b) => a.attributes.id-b.attributes.id)
-    .map(item => {
-      
+  .sort((a, b) => a.attributes.id-b.attributes.id)
+  .map(item => {      
+      console.log(item)
+
       return `
         <div class='card'>
           <img src='${item.attributes.posterImage.original}'>
@@ -37,4 +38,4 @@ function pageLoaded() {
   form.addEventListener('submit', searchAnime)
 }
 
-  window.addEventListener('load', pageLoaded);
+window.addEventListener('load', pageLoaded);
