@@ -1,10 +1,21 @@
+const CARD = 'card';
+const IMG_BOX = 'img-box';
+const RATING = 'rating';
+const NAME = 'name';
+const EPISODES = 'episodes';
+const DESCRIPTION = 'description';
+const TRAILER_BTN = 'trailer-btn';
+const TYPE = 'type';
+const ROW = 'row';
+
+const searchResult = document.getElementById('result');
 const mainUrl = 'https://kitsu.io/api/edge';
 
 window.addEventListener('load', pageLoaded);
 
 function searchAnime(e) {
-  const form = new FormData(this);
-  const query = form.get('search-anime');
+  let form = new FormData(this);
+  let query = form.get('search-anime');
 
   e.preventDefault();
 
@@ -17,10 +28,11 @@ function searchAnime(e) {
 }
 
 function updDom(res) {
-  const searchResult = document.getElementById('result');
-  const animeByCategories = res.data
+  searchResult.innerHTML = '';
+
+  let animeByCategories = res.data
     .reduce((acc, data) => {
-        const {showType} = data.attributes;
+        let {showType} = data.attributes;
         
         if (acc[showType] === undefined) 
         acc[showType] = [];
@@ -29,43 +41,66 @@ function updDom(res) {
         return acc;
     }, {});
 
-  searchResult.innerHTML = Object.keys(animeByCategories).map(key => {
-      const animesHTML = animeByCategories[key]
+    let result = Object.keys(animeByCategories).map(key => {
+      let animesHTML = animeByCategories[key]
         .sort((a, b) => a.attributes.id-b.attributes.id)
         .map(item => {
+          let card = document.createElement('div');
+          let imgBox = document.createElement('div');
+          let img = document.createElement('img');
+          let rating = document.createElement('div');
+          let name = document.createElement('div');
+          let episodes = document.createElement('div');
+          let description = document.createElement('div')
+          let trailerBtn = document.createElement('div');
+          let trailer = document.createElement('a');
 
           if (item.attributes.episodeCount === null) {
             item.attributes.episodeCount = 0;
-          }
-
-          return `
-            <div class='card'>
-              <div class="img-box">
-                <img src='${item.attributes.posterImage.original}'>
-                <div class="rating">${Math.floor(item.attributes.averageRating * 10) / 100}</div>
-              </div>
-              <div class='name'>${item.attributes.titles.en_jp}</div>
-              <div class='episodes'>Episodes: ${item.attributes.episodeCount}</div>
-              <div class='description'>${item.attributes.synopsis}</div>
-              <div class="trailer-btn">
-                <a href="https://www.youtube.com/watch?v=${item.attributes.youtubeVideoId}">
-                  Watch trailer
-                </a>
-              </div>
-            </div>
-          `;
-      }).join('');
-
-      return `
-        <section>
-            <h3>Type: ${key.toUpperCase()}</h3>
-            <div class="row">${animesHTML}</div>
-        </section>
-      `
+          } 
+          
+          card.classList.add(CARD);
+          imgBox.classList.add(IMG_BOX);
+          rating.classList.add(RATING);
+          name.classList.add(NAME);
+          episodes.classList.add(EPISODES);
+          description.classList.add(DESCRIPTION);
+          trailerBtn.classList.add(TRAILER_BTN);
+          
+          img.src = `${item.attributes.posterImage.original}`
+          rating.innerHTML = Math.floor(item.attributes.averageRating * 10) / 100;
+          name.innerHTML = item.attributes.titles.en_jp;
+          description.innerHTML = item.attributes.synopsis;
+          trailer.innerHTML = 'Watch trailer';
+          trailer.href = `https://www.youtube.com/watch?v=${item.attributes.youtubeVideoId}`;
+          
+          card.append(imgBox, name, episodes, description, trailerBtn);
+          imgBox.append(img, rating);
+          trailerBtn.append(trailer);
+          
+          return card.outerHTML  
+        }).join('');
+          return createSection(key, animesHTML)
     }).join('');
 }
 
+function createSection(key, animesHTML) {
+  let section = document.createElement('section');
+  let type = document.createElement('h3');
+  let row = document.createElement('div');
+  
+  section.classList.add(`${key.toLowerCase()}`);
+  type.classList.add(TYPE);
+  row.classList.add(ROW);
+  
+  type.innerHTML = key.toUpperCase();
+  row.innerHTML = animesHTML;
+  
+  searchResult.append(section);
+  section.append(type, row);
+}
+
 function pageLoaded() {
-  const form = document.getElementById('search-form');
+  let form = document.getElementById('search-form');
   form.addEventListener('submit', searchAnime)
 }
