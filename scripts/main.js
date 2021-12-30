@@ -41,44 +41,11 @@ function updDom(res) {
         return acc;
     }, {});
 
-    let result = Object.keys(animeByCategories).map(key => {
+    Object.keys(animeByCategories).map(key => {
       let animesHTML = animeByCategories[key]
         .sort((a, b) => a.attributes.id-b.attributes.id)
         .map(item => {
-          let card = document.createElement('div');
-          let imgBox = document.createElement('div');
-          let img = document.createElement('img');
-          let rating = document.createElement('div');
-          let name = document.createElement('div');
-          let episodes = document.createElement('div');
-          let description = document.createElement('div')
-          let trailerBtn = document.createElement('div');
-          let trailer = document.createElement('a');
-
-          if (item.attributes.episodeCount === null) {
-            item.attributes.episodeCount = 0;
-          } 
-          
-          card.classList.add(CARD);
-          imgBox.classList.add(IMG_BOX);
-          rating.classList.add(RATING);
-          name.classList.add(NAME);
-          episodes.classList.add(EPISODES);
-          description.classList.add(DESCRIPTION);
-          trailerBtn.classList.add(TRAILER_BTN);
-          
-          img.src = `${item.attributes.posterImage.original}`
-          rating.innerHTML = Math.floor(item.attributes.averageRating * 10) / 100;
-          name.innerHTML = item.attributes.titles.en_jp;
-          description.innerHTML = item.attributes.synopsis;
-          trailer.innerHTML = 'Watch trailer';
-          trailer.href = `https://www.youtube.com/watch?v=${item.attributes.youtubeVideoId}`;
-          
-          card.append(imgBox, name, episodes, description, trailerBtn);
-          imgBox.append(img, rating);
-          trailerBtn.append(trailer);
-          
-          return card.outerHTML  
+          return createCard(item)
         }).join('');
           return createSection(key, animesHTML)
     }).join('');
@@ -98,6 +65,44 @@ function createSection(key, animesHTML) {
   
   searchResult.append(section);
   section.append(type, row);
+}
+
+function createCard(item) {
+  let card = document.createElement('div');
+  let imgBox = document.createElement('div');
+  let img = document.createElement('img');
+  let rating = document.createElement('div');
+  let name = document.createElement('div');
+  let episodes = document.createElement('div');
+  let description = document.createElement('div')
+  let trailerBtn = document.createElement('div');
+  let trailer = document.createElement('a');
+
+  if (item.attributes.episodeCount === null) {
+    item.attributes.episodeCount = 0;
+  }
+  
+  card.classList.add(CARD);
+  imgBox.classList.add(IMG_BOX);
+  rating.classList.add(RATING);
+  name.classList.add(NAME);
+  episodes.classList.add(EPISODES);
+  description.classList.add(DESCRIPTION);
+  trailerBtn.classList.add(TRAILER_BTN);
+  
+  img.src = `${item.attributes.posterImage.original}`
+  rating.innerHTML = Math.floor(item.attributes.averageRating * 10) / 100;
+  name.innerHTML = item.attributes.titles.en_jp;
+  episodes.innerHTML = `Episodes: ${item.attributes.episodeCount}`;
+  description.innerHTML = item.attributes.synopsis;
+  trailer.innerHTML = 'Watch trailer';
+  trailer.href = `https://www.youtube.com/watch?v=${item.attributes.youtubeVideoId}`;
+  
+  card.append(imgBox, name, episodes, description, trailerBtn);
+  imgBox.append(img, rating);
+  trailerBtn.append(trailer);
+
+  return card.outerHTML
 }
 
 function pageLoaded() {
