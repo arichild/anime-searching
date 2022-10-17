@@ -1,4 +1,4 @@
-# anime-list
+# anime-searching
 List of anime and its details. Built with API fetched from [kitsu.io](https://kitsu.docs.apiary.io/): 
 
 
